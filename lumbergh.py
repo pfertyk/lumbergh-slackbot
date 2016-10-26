@@ -1,23 +1,14 @@
-from slackclient import SlackClient
-import os
 from flask import Flask, request, Response, jsonify
-
 
 app = Flask(__name__)
 link = '<https://cdn.meme.am/instances/400x/33568413.jpg|That would be great>'
 
-client_token = os.environ.get('SLACKBOT_LUMBERGH_TOKEN')
-webhook_token = os.environ.get('SLACKBOT_WEBHOOK_TOKEN')
-
-sc = SlackClient(client_token)
-
 
 @app.route('/lumbergh', methods=['POST'])
 def inbound():
-    if request.form.get('token') == webhook_token:
-        text = request.form.get('text')
-        if 'that would be great' in text.lower() and link not in text:
-            return jsonify(text=link)
+    text = request.form.get('text', '')
+    if 'that would be great' in text.lower() and link not in text:
+        return jsonify(text=link)
     return Response(), 200
 
 if __name__ == '__main__':
