@@ -1,6 +1,6 @@
 from slackclient import SlackClient
 import os
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 
 
 app = Flask(__name__)
@@ -14,18 +14,10 @@ sc = SlackClient(client_token)
 
 @app.route('/lumbergh', methods=['POST'])
 def inbound():
-    print('incoming')
     if request.form.get('token') == webhook_token:
-        print('verified')
-        channel = request.form.get('channel_name')
-        text = request.form.get('channel_name')
+        text = request.form.get('text')
         if 'that would be great' in text.lower() and link not in text:
-            sc.api_call(
-                'chat.postMessage',
-                channel=channel,
-                text=link,
-                as_user='true:'
-            )
+            return jsonify(text=link)
     return Response(), 200
 
 if __name__ == '__main__':
