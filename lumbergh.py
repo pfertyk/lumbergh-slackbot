@@ -5,7 +5,7 @@ link = '<https://cdn.meme.am/instances/400x/33568413.jpg|That would be great>'
 
 
 @app.route('/lumbergh', methods=['POST'])
-def inbound():
+def lumbergh():
     text = request.form.get('text', '')
     if 'that would be great' in text.lower() and link not in text:
         return jsonify(text=link)
